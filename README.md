@@ -17,3 +17,5 @@ examples
     # same as above without a pipeline
     ./DROWNDetectionTool.sh targets.txt
 ```
+
+![DROWN Detection Tool](https://dc414.org/~ngharo/code/DROWNDetectionTool.gif)
