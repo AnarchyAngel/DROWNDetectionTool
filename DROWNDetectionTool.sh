@@ -39,7 +39,10 @@ check() {
     if port_open "$target"; then
         ok
         echo -en "[..] Checking for DROWN"
-        if timeout -k 0m 15s java -jar TestSSLServer.jar "$target" "$port" | grep -q "SSLv2"; then
+        if timeout -k 0m 15s java -jar TestSSLServer.jar "$target" "$port" | grep "SSLv2"; then
+            fail
+        elif [[ ${PIPESTATUS[0]} -eq 124 ]]; then
+            echo -n " - CONNECTION TIMED OUT"
             fail
         else
             ok
