@@ -1,6 +1,16 @@
 #!/bin/bash
+port=443 # default
 
-TARGETS=$1
+if [[ "$1" == "-p" ]]; then
+    shift
+    # make sure following arg is a digit
+    if grep -q "[0-9]+" <<< "$1"; then
+        port="$1"
+        shift
+    fi
+fi
+
+TARGETS=$*
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
     echo "[*] Checking if $line is up and listening on 443..."
