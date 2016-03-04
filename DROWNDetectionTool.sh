@@ -56,9 +56,9 @@ if (( $# > 0 )); then
         while read target; do check "$target"; done < "$1"
     else
         # single or list of targets
-        while read target; do check "$target"; done <<< "$*"
+        for target in $*; do check "$target"; done
     fi
 else
     # piped targets
-    while read target -t 0.1; do check "$target"; done
+    while read -t 0.1 target; do check "$target"; done
 fi
