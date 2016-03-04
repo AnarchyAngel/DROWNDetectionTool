@@ -1,16 +1,22 @@
 #!/bin/bash
 usage() {
-    echo >&2 << USAGE
+    cat >&2 << USAGE
 $0 [-p PORT] targets ...
 
     -p  port number to contact on target
         defaults to 443 (HTTPS)
 
 examples
-    $ $0 -p 6697 example.com
-    $ cat targets.txt | $0
-    $ $0 targets.txt
+    # test port 6697 on example.con
+    $0 -p 6697 example.com
+
+    # test port 443 on each target in targets.txt (one per line)
+    cat targets.txt | $0
+
+    # same as above without a pipeline
+    $0 targets.txt
 USAGE
+    exit 255
 }
 
 port=443 # default
@@ -59,6 +65,13 @@ if (( $# > 0 )); then
         for target in $*; do check "$target"; done
     fi
 else
+    show_usage=1
     # piped targets
-    while read -t 0.1 target; do check "$target"; done
+    while read -t 0.1 target; do
+        show_usage=0
+        [[ -z "$target" ]] && usage
+        check "$target"
+    done
+
+    [[ "$show_usage" -eq 1 ]] && usage
 fi
