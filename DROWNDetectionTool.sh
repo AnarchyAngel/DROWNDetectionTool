@@ -47,10 +47,12 @@ check() {
 
 if [[ "$1" == "-p" ]]; then
     shift
-    # make sure following arg is a digit
+    # make sure following arg is digits
     if grep -q "[0-9]\+" <<< "$1"; then
         port="$1"
         shift
+    else
+        usage
     fi
 fi
 
