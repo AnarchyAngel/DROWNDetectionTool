@@ -25,7 +25,9 @@ port_open() {
     local target="$1"
     nmap -sT -p"$port" -T5 --open "$target" 2>&1 | grep -q "open"
 }
-
+found() {
+    echo -e "\r[\e[1;32mFOUND!!\e[0m]"
+}
 ok() {
     echo -e "\r[\e[0;32mOK\e[0m]"
 }
@@ -38,9 +40,10 @@ check() {
     echo -n "[..] Checking if ${target} is up and listening on ${port}"
     if port_open "$target"; then
         ok
-        echo -en "[..] Checking for DROWN"
+        echo -en "[..] Checking for DROWN..."
         if timeout -k 0m 15s java -jar TestSSLServer.jar "$target" "$port" | grep "SSLv2"; then
-            fail
+            echo "$target:$port open to DROWN `date`" >> loot.log
+            found
         elif [[ ${PIPESTATUS[0]} -eq 124 ]]; then
             echo -n " - CONNECTION TIMED OUT"
             fail
