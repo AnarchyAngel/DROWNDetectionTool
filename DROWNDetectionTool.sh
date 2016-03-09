@@ -1,6 +1,11 @@
 #!/bin/bash
 usage() {
     cat >&2 << USAGE
+
+[--] DROWNDetectionTool by Adam Espitia
+[--] aahideaway.blogspot.com
+[--] @anarchyang31
+
 $0 [-p PORT] targets ...
 
     -p  port number to contact on target
